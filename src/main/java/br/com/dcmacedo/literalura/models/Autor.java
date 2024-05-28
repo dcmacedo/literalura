@@ -1,12 +1,30 @@
 package br.com.dcmacedo.literalura.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "autores")
 public class Autor {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String nome;
     private Integer anoNascimento;
     private Integer anoFalecimento;
+
+    @ManyToOne
     private Livro livro;
+
+    public Autor(){};
+
+    public Autor(DadosAutor dadosAutor) {
+        this.id = dadosAutor.id();
+        this.nome = dadosAutor.nome();
+        this.anoNascimento = dadosAutor.anoNascimento();
+        this.anoFalecimento = dadosAutor.anoFalecimento();
+    }
 
     public Long getId() {
         return id;
