@@ -8,6 +8,7 @@ import br.com.dcmacedo.literalura.services.ConsultaAPI;
 import br.com.dcmacedo.literalura.services.ConverteDados;
 
 import java.time.Year;
+import java.util.DoubleSummaryStatistics;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -36,7 +37,9 @@ public class Principal {
                 3 - Listar Autores cadastrados
                 4 - Listar Autores vivos em determinado ano
                 5 - Listar Livros em determinado idioma
-                6 - Listar Livros em um determinado idioma.
+                6 - Listar Livros em um determinado idioma
+                7 - Listar Estatísticas dos livros
+                
                 0 - Sair
                 -------------------------------------------
                 """;
@@ -63,6 +66,9 @@ public class Principal {
                         break;
                     case 6:
                         quantidadeLivrosPorIdioma();
+                        break;
+                    case 7:
+                        estatisticasLivros();
                         break;
                     case 0:
                         System.out.println("Saindo...");
@@ -157,5 +163,21 @@ public class Principal {
         String idioma = leitura.nextLine();
         Integer quantidadeIdioma = repository.countByIdioma(idioma);
         System.out.printf("O idioma %s tem %d livros cadastrado\n", idioma, quantidadeIdioma);
+    }
+
+    private void estatisticasLivros() {
+        DoubleSummaryStatistics statistics = new DoubleSummaryStatistics();
+
+        List<Double> dadosDaConsulta = repository.buscaNumeroDownload();
+        for (Double valor : dadosDaConsulta){
+            statistics.accept(valor);
+        }
+
+        System.out.println("Estatísticas de Downloads dos Livros:");
+        System.out.println("Média: " + statistics.getAverage());
+        System.out.println("Mínimo: " + statistics.getMin());
+        System.out.println("Máximo: " + statistics.getMax());
+        System.out.println("Soma: " + statistics.getSum());
+        System.out.println("Contagem: " + statistics.getCount());
     }
 }
