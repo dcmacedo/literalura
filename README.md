@@ -70,6 +70,7 @@ Literalura oferece as seguintes opções de interação:
 4. **Listar Autores vivos em determinado ano**: Permite listar todos os autores que estavam vivos em um determinado ano.
 5. **Listar Livros em determinado Idioma**: Exibe uma lista de livros disponíveis em um idioma específico.
 6. **Exibir a quantidade de livros em um determinado idioma**: Mostra a quantidade de livros disponíveis em um idioma específico.
+7. **Exibir as Estatísticas de Downloads dos Livros**: Mostra algumas estatísticas de downloads (soma, média, máximo, mínimo, contagem, etc.)
 
 ## Tecnologias Utilizadas
 
