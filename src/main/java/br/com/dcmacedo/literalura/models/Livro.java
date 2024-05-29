@@ -2,37 +2,38 @@ package br.com.dcmacedo.literalura.models;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "livros")
 public class Livro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; //: <number of Project Gutenberg ID>,
-    private String titulo; //"title": <string>,
-    private List<String> assuntos = new ArrayList<>(); //"subjects": <array of strings>,
-    private List<String> idiomas = new ArrayList<>(); //"languages": <array of strings>,
-    private Boolean copyright; //: <boolean or null>,
-    private String tipoMidia; //"media_type": <string>,
-    private Integer contadorDownload; //"download_count": <number>
+    private Long id;
 
-    @OneToMany(mappedBy = "livro", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Autor> autores = new ArrayList<>(); //"authors": <array of Persons>,
+    private String titulo;
 
-    public Livro(){};
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Autor autor;
 
-    public Livro(DadosLivro dadosLivro) {
-        this.id = dadosLivro.id();
-        this.titulo = dadosLivro.titulo();
-        this.assuntos = dadosLivro.assuntos();
-        this.autores = dadosLivro.autores();
-        this.idiomas = dadosLivro.idiomas();
-        this.copyright = dadosLivro.copyright();
-        this.tipoMidia = dadosLivro.tipoMidia();
-        this.contadorDownload = dadosLivro.contadorDownload();
+    private String idioma;
+
+    private Double numeroDownload;
+
+    public Livro() {}
+
+    public Livro(LivroDados livroDados) {
+        this.titulo = livroDados.titulo();
+        Autor autor = new Autor(livroDados.authors().get(0));
+        this.autor = autor;
+        this.idioma = livroDados.idioma().get(0);
+        this.numeroDownload = livroDados.numeroDownload();
+    }
+
+    public Livro(Long idApi, String titulo, Autor autor, String idioma, Double numeroDownload) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.idioma = idioma;
+        this.numeroDownload = numeroDownload;
     }
 
     public Long getId() {
@@ -51,65 +52,37 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public List<String> getAssuntos() {
-        return assuntos;
+    public Autor getAutor() {
+        return autor;
     }
 
-    public void setAssuntos(List<String> assuntos) {
-        this.assuntos = assuntos;
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
 
-    public List<Autor> getAutores() {
-        return autores;
+    public String getIdiomas() {
+        return idioma;
     }
 
-    public void setAutores(List<Autor> autores) {
-        this.autores = autores;
+    public void setIdiomas(String idioma) {
+        this.idioma = idioma;
     }
 
-    public List<String> getIdiomas() {
-        return idiomas;
+    public Double getNumeroDownload() {
+        return numeroDownload;
     }
 
-    public void setIdiomas(List<String> idiomas) {
-        this.idiomas = idiomas;
-    }
-
-    public Boolean getCopyright() {
-        return copyright;
-    }
-
-    public void setCopyright(Boolean copyright) {
-        this.copyright = copyright;
-    }
-
-    public String getTipoMidia() {
-        return tipoMidia;
-    }
-
-    public void setTipoMidia(String tipoMidia) {
-        this.tipoMidia = tipoMidia;
-    }
-
-    public Integer getContadorDownload() {
-        return contadorDownload;
-    }
-
-    public void setContadorDownload(Integer contadorDownload) {
-        this.contadorDownload = contadorDownload;
+    public void setNumeroDownload(Double numeroDownload) {
+        this.numeroDownload = numeroDownload;
     }
 
     @Override
     public String toString() {
-        return "Livro{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", assuntos=" + assuntos +
-                ", autores=" + autores +
-                ", idiomas=" + idiomas +
-                ", copyright=" + copyright +
-                ", tipoMidia='" + tipoMidia + '\'' +
-                ", contadorDownload=" + contadorDownload +
-                '}';
+        return  "------------------ LIVRO ------------------" +
+                "\nTítulo:             " + titulo +
+                "\nAutor:              " + autor.getAutor() +
+                "\nIdioma:             " + idioma +
+                "\nNúmero de Download: " + numeroDownload +
+                "\n-------------------------------------------\n";
     }
 }

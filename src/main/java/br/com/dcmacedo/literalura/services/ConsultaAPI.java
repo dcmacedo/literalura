@@ -6,21 +6,19 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class ConsumoApi {
+public class ConsultaAPI {
 
-    public String obterDados(String endereco){
-
+    public String buscar(String endereco){
         HttpClient client = HttpClient.newHttpClient();
-
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(endereco))
                 .build();
+        HttpResponse<String> response  = null;
 
-        HttpResponse<String> response = null;
-        try{
+        try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        }catch (IOException | InterruptedException e){
-            throw new RuntimeException(e);
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Erro ao buscar na API: " + endereco);
         }
 
         return response.body();
